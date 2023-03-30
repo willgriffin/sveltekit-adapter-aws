@@ -61,7 +61,7 @@ export class AWSAdapterStack extends Stack {
       } as any,
     });
 
-    props.serverHandlerPolicies?.forEach((policy) => this.serverHandler.addToRolePolicy(policy));
+    props?.serverHandlerPolicies?.forEach((policy) => this.serverHandler.addToRolePolicy(policy));
 
     this.httpApi = new HttpApi(this, 'API', {
       corsPreflight: {
@@ -82,7 +82,7 @@ export class AWSAdapterStack extends Stack {
 
     if (process.env.FQDN) {
       this.hostedZone = aws_route53.HostedZone.fromLookup(this, 'HostedZone', {
-        domainName,
+        domainName: process.env.ZONE_NAME || domainName,
       }) as aws_route53.HostedZone;
 
       this.certificate = new aws_certificatemanager.DnsValidatedCertificate(this, 'DnsValidatedCertificate', {
