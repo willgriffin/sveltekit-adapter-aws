@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
-    "@types/node": "18.14.0",
+    "@types/node": "^18.14.0",
     "@types/node-fetch": "2.6.2",
     "esbuild": "0.17.10",
     "prettier": "2.8.4",
@@ -41,7 +41,7 @@
     "@aws-cdk/aws-apigatewayv2-integrations-alpha": "2.66.0-alpha.0",
     "@sveltejs/kit": "^1.8.3",
     "aws-cdk": "^2.72.0",
-    "aws-cdk-lib": "^2.72.0",
+    "aws-cdk-lib": "2.72.0",
     "constructs": "10.1.257",
     "dotenv": "16.0.3",
     "fs-extra": "11.1.0",

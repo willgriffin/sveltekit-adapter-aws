@@ -17,6 +17,7 @@ export interface AWSAdapterProps {
   MEMORY_SIZE?: number;
   zoneName?: string;
   env?: { [key: string]: string };
+  injected?: string[];
 }
 
 export function adapter({
@@ -30,6 +31,7 @@ export function adapter({
   MEMORY_SIZE,
   zoneName = '',
   env = {},
+  injected = [],
 }: AWSAdapterProps = {}) {
   /** @type {import('@sveltejs/kit').Adapter} */
   return {
@@ -62,10 +64,12 @@ export function adapter({
       copyFileSync(`${__dirname}/lambda/shims.js`, `${server_directory}/shims.js`);
 
       builder.log.minor('Building AWS Lambda server function.');
+      console.log({ esbuildOptions });
+      console.log('plugins', esbuildOptions?.plugins);
       esbuild.buildSync({
         entryPoints: [`${server_directory}/_index.js`],
         outfile: `${server_directory}/index.js`,
-        inject: [join(`${server_directory}/shims.js`)],
+        inject: [...injected, join(`${server_directory}/shims.js`)],
         external: ['node:*', ...(esbuildOptions?.external ?? [])],
         format: esbuildOptions?.format ?? 'cjs',
         banner: esbuildOptions?.banner ?? {},
@@ -73,6 +77,7 @@ export function adapter({
         platform: 'node',
         target: esbuildOptions?.target ?? 'node16',
         treeShaking: true,
+        // plugins: esbuildOptions?.plugins ?? [],
       });
 
       builder.log.minor('Prerendering static pages.');
